@@ -7,6 +7,8 @@ function updateRoute(){
     const view=template.content.cloneNode(true);//creating a copy of the template content
     app.innerHTML='';
     app.appendChild(view);
+    document.title=route.title;
+    console.log(`${route.title} is shown`)
 }
 function navigate(path){
     history.pushState({},path,path);//change url
@@ -18,13 +20,20 @@ function handleLinks(event){
 }
 const routes={
     '/login':{
-        templateId:'login'
+        templateId:'login',
+        title:'Login'
     },
     '/dashboard':{
-        templateId:'dashboard'
+        templateId:'dashboard',
+        title:'Dashboard'
     },
     '/error':{
-        templateId:'error'
+        templateId:'error',
+        title:'Error'
+    },
+    '/credits':{
+        templateId:'credits',
+        title:'Credits'
     }
     
 }
