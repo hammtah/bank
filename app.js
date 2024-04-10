@@ -28,5 +28,7 @@ const routes={
     }
     
 }
+// call the updateRoute() each time the history changes
+window.onpopstate = () => updateRoute();
 // change template based on a path
 updateRoute();
