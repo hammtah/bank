@@ -12,14 +12,14 @@
     <template id="login">
         <h1>Bank app</h1>
         <section>
-            <a href="/dashboard">Login</a>
+            <a href="/dashboard" onclick="handleLinks(event)">Dashboard</a>
         </section>
     </template>
 
     <template id="dashboard">
         <header>
           <h1>Bank App</h1>
-          <a href="/login">Logout</a>
+          <a href="/login" onclick="handleLinks(event)">Login</a>
         </header>
         <section>
           Balance: 100$
