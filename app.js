@@ -1,3 +1,5 @@
+let account = null;
+
 function updateRoute(){
     const path=window.location.pathname;
     const route=routes[path];
@@ -8,7 +10,8 @@ function updateRoute(){
     app.innerHTML='';
     app.appendChild(view);
     document.title=route.title;
-    console.log(`${route.title} is shown`)
+    if(typeof route.init === 'function')  route.init();
+
 }
 function navigate(path){
     history.pushState({},path,path);//change url
@@ -25,7 +28,8 @@ const routes={
     },
     '/dashboard':{
         templateId:'dashboard',
-        title:'Dashboard'
+        title:'Dashboard',
+        init:updateDashboard
     },
     '/error':{
         templateId:'error',
@@ -42,7 +46,6 @@ window.onpopstate = () => updateRoute();
 // change template based on a path
 updateRoute();
 
-let account = null;
 
 async function register(){
     const form=document.getElementById("registerForm");
@@ -88,7 +91,17 @@ async function getAccount(account){
     }
 }
 
-function updateElement(text,id){
+function updateElement(id,text){
     const elm=document.getElementById(id);
     elm.textContent=text;
 }
+
+function updateDashboard() {
+    if (!account) {
+      return navigate('/login');
+    }
+  
+    updateElement('description', account.description);
+    updateElement('balance', account.balance.toFixed(2));
+    updateElement('currency', account.currency);
+  }
