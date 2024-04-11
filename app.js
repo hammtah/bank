@@ -42,6 +42,8 @@ window.onpopstate = () => updateRoute();
 // change template based on a path
 updateRoute();
 
+let account = null;
+
 async function register(){
     const form=document.getElementById("registerForm");
     const formData=new FormData(form);
@@ -52,6 +54,8 @@ async function register(){
         return console.log('An error occurred:', result.error);
     }
     console.log('Account created!', result);
+    account = result;
+    navigate('/dashboard');
 }
 
 async function createAccount(account) {
@@ -66,3 +70,20 @@ async function createAccount(account) {
       return { error: error.message || 'Unknown error' };
     }
   }
+  
+async function login(){
+    const form=document.getElementById("loginForm");
+    const username=form.user.value;
+    const data= await getAccount(username);
+    if(data.error) return console.log('login error: ',data.error);
+    account = data;
+    navigate('/dashboard');
+}
+async function getAccount(account){
+    try {
+        const res= await fetch("//localhost:5000/api/accounts/"+encodeURIComponent(account))
+        return await res.json();
+    } catch (error) {
+        return {error:error.message || 'UNKNOWN ERROR'}
+    }
+}
