@@ -70,12 +70,12 @@ async function createAccount(account) {
       return { error: error.message || 'Unknown error' };
     }
   }
-  
+
 async function login(){
     const form=document.getElementById("loginForm");
     const username=form.user.value;
     const data= await getAccount(username);
-    if(data.error) return console.log('login error: ',data.error);
+    if(data.error) return updateElement(data.error,"login-error")
     account = data;
     navigate('/dashboard');
 }
@@ -86,4 +86,9 @@ async function getAccount(account){
     } catch (error) {
         return {error:error.message || 'UNKNOWN ERROR'}
     }
+}
+
+function updateElement(text,id){
+    const elm=document.getElementById(id);
+    elm.textContent=text;
 }
