@@ -91,9 +91,10 @@ async function getAccount(account){
     }
 }
 
-function updateElement(id,text){
+function updateElement(id,textOrNode){
     const elm=document.getElementById(id);
-    elm.textContent=text;
+    elm.textContent='';
+    elm.append(textOrNode);
 }
 
 function updateDashboard() {
