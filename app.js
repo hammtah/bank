@@ -1,26 +1,4 @@
 let account = null;
-
-function updateRoute(){
-    const path=window.location.pathname;
-    const route=routes[path];
-    if(!route) navigate('/error');
-    const template=document.getElementById(route.templateId);
-    const app=document.getElementById("app");
-    const view=template.content.cloneNode(true);//creating a copy of the template content
-    app.innerHTML='';
-    app.appendChild(view);
-    document.title=route.title;
-    if(typeof route.init === 'function')  route.init();
-
-}
-function navigate(path){
-    history.pushState({},path,path);//change url
-    updateRoute(path);
-}
-function handleLinks(event){
-    event.preventDefault();
-    navigate(event.target.pathname)
-}
 const routes={
     '/login':{
         templateId:'login',
@@ -41,11 +19,35 @@ const routes={
     }
     
 }
-// call the updateRoute() each time the history changes
-window.onpopstate = () => updateRoute();
 // change template based on a path
 updateRoute();
 
+function updateRoute(){
+    const path=window.location.pathname;
+    const route=routes[path];
+    if(!route) navigate('/error');
+    const template=document.getElementById(route.templateId);
+    const app=document.getElementById("app");
+    const view=template.content.cloneNode(true);//creating a copy of the template content
+    app.innerHTML='';
+    app.appendChild(view);
+    document.title=route.title;
+    if(typeof route.init === 'function')  route.init();
+
+}
+
+function navigate(path){
+    history.pushState({},path,path);//change url
+    updateRoute(path);
+}
+
+function handleLinks(event){
+    event.preventDefault();
+    navigate(event.target.pathname)
+}
+
+// call the updateRoute() each time the history changes
+window.onpopstate = () => updateRoute();
 
 async function register(){
     const form=document.getElementById("registerForm");
@@ -82,6 +84,7 @@ async function login(){
     account = data;
     navigate('/dashboard');
 }
+
 async function getAccount(account){
     try {
         const res= await fetch("//localhost:5000/api/accounts/"+encodeURIComponent(account))
@@ -116,6 +119,7 @@ function updateDashboard() {
 
 function createTransactionRow(transaction) {
   const template = document.getElementById('transaction');
+  //creating row
   const transactionRow = template.content.cloneNode(true);
   const tr = transactionRow.querySelector('tr');
   tr.children[0].textContent = transaction.date;
