@@ -41,3 +41,28 @@ const routes={
 window.onpopstate = () => updateRoute();
 // change template based on a path
 updateRoute();
+
+async function register(){
+    const form=document.getElementById("registerForm");
+    const formData=new FormData(form);
+    const data=Object.fromEntries(formData);
+    const jsonData=JSON.stringify(data);
+    const result= await createAccount(jsonData);
+    if (result.error) {
+        return console.log('An error occurred:', result.error);
+    }
+    console.log('Account created!', result);
+}
+
+async function createAccount(account) {
+    try {
+      const response = await fetch('//localhost:5000/api/accounts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: account
+      });
+      return await response.json();
+    } catch (error) {
+      return { error: error.message || 'Unknown error' };
+    }
+  }
